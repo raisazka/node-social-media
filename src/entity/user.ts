@@ -1,5 +1,9 @@
 interface User {
-    name: string
-    password: string
+    id: string
     email: string
+    password: string
+    role: string
+    name: string
 }
+
+export default User

@@ -13,8 +13,8 @@ const compare = (password: string, hashedPassword: string) =>
 
 const verify = (token: string) => jwt.verify(token, config.jwtSecret)
 
-const generateToken = (payload) =>
-    jwt.sign(payload, config.jwtSecret, {
+const generateToken = (email: string, password: string) =>
+    jwt.sign({ email, password }, config.jwtSecret, {
         expiresIn: 360000,
     })
 
