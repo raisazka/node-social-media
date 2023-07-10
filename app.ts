@@ -6,8 +6,9 @@ import initExpress from "./frameworks/webserver/express"
 import "reflect-metadata"
 import routes from "./frameworks/webserver/routes"
 import Container from "typedi"
-import AuthController from "./adapters/auth"
-import errorHandlingMiddlware from "./frameworks/webserver/middlewares/error"
+import AuthController from "./controllers/authController"
+import errorHandlingMiddlware from "./frameworks/webserver/middlewares/errorHandleMiddleware"
+import UserController from "./controllers/userController"
 
 const app: express.Express = express()
 const router: express.Router = express.Router()
@@ -23,7 +24,9 @@ connect(mongoose, config, {
 }).connection()
 
 const authController = Container.get(AuthController)
-routes(app, router, authController)
+const userController = Container.get(UserController)
+
+routes(app, router, authController, userController)
 
 app.use(errorHandlingMiddlware)
 

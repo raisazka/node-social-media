@@ -1,6 +1,6 @@
 import { Inject, Service } from "typedi"
-import AuthUseCase from "../app/usecases/auth"
 import { Request, Response, NextFunction } from "express"
+import AuthUseCase from "../app/usecases/authUsecase"
 import "reflect-metadata"
 
 interface AuthRequest {

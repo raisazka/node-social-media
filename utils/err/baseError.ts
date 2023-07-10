@@ -10,3 +10,5 @@ class BaseError extends Error {
         Error.captureStackTrace(this)
     }
 }
+
+export default BaseError

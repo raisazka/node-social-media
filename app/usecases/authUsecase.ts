@@ -6,6 +6,7 @@ import {
 import { Service, Inject } from "typedi"
 import "reflect-metadata"
 import UserRepository from "../../frameworks/database/mongodb/repository/user/userRepo"
+import BaseError from "../../utils/err/baseError"
 
 @Service()
 class AuthUseCase {
@@ -17,8 +18,12 @@ class AuthUseCase {
         email: string,
         password: string
     ): Promise<string> => {
-        await this.userRepo.add(name, email, encryptPassword(password))
-        return generateToken(email, password)
+        const user = await this.userRepo.add(
+            name,
+            email,
+            encryptPassword(password)
+        )
+        return generateToken(user.id, user.email, user.password)
     }
 
     login = async (email: string, password: string): Promise<string> => {
@@ -27,7 +32,7 @@ class AuthUseCase {
         }
 
         return this.userRepo
-            .findUserByProperty({ email }, { page: 0, size: 1 })
+            .findUserByProperty({ email }, { page: 1, size: 1 })
             .then((users) => {
                 if (users.length === 0) {
                     throw new BaseError(500, "user not found")
@@ -37,7 +42,7 @@ class AuthUseCase {
                     throw new BaseError(500, "password doesn't match")
                 }
 
-                return generateToken(email, password)
+                return generateToken(users[0].id, email, password)
             })
     }
 }

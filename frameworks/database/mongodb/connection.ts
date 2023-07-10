@@ -33,6 +33,8 @@ export default function connect(
         mongoose.disconnect()
     })
 
+    mongoose.set("debug", true)
+
     return {
         connection,
     }
