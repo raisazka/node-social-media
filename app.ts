@@ -9,6 +9,7 @@ import Container from "typedi"
 import AuthController from "./controllers/authController"
 import errorHandlingMiddlware from "./frameworks/webserver/middlewares/errorHandleMiddleware"
 import UserController from "./controllers/userController"
+import PostController from "./controllers/postController"
 
 const app: express.Express = express()
 const router: express.Router = express.Router()
@@ -25,8 +26,9 @@ connect(mongoose, config, {
 
 const authController = Container.get(AuthController)
 const userController = Container.get(UserController)
+const postController = Container.get(PostController)
 
-routes(app, router, authController, userController)
+routes(app, router, authController, userController, postController)
 
 app.use(errorHandlingMiddlware)
 

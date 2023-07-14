@@ -7,6 +7,8 @@ interface User {
     password: string
     role: string
     name: string
+    followers: String[]
+    followings: String[]
     createdAt: Date
 }
 
@@ -36,6 +38,8 @@ const UserSchema = new mongoose.Schema<User>({
         type: String,
         required: true,
     },
+    followings: [String],
+    followers: [String],
     createdAt: Date,
 })
 

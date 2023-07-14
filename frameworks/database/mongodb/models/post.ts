@@ -1,36 +1,31 @@
 import mongoose from "mongoose"
 import { v4 } from "uuid"
-import Post from "../../../../src/entity/post"
+import { Post, Comment } from "../../../../src/entity/post"
 
-interface Comment {
-    user: {
-        name: string
-    }
-    content: string
-}
+const CommentSchema = new mongoose.Schema<Comment>()
 
 const PostSchema = new mongoose.Schema<Post>({
     id: {
+        type: String,
         default: (): string => {
             return v4()
         },
         required: true,
     },
     userId: {
+        type: String,
         required: true,
     },
     content: {
+        type: String,
         required: true,
     },
-    comments: {
-        type: Map,
-        of: Comment,
-    },
+    comments: [CommentSchema],
     likeCount: {
-        default: 0,
+        type: Number,
     },
     commentCount: {
-        default: 0,
+        type: Number,
     },
     userLikes: {
         type: Map,

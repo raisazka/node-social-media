@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express"
 import PostUseCase, { CreatePostRequest } from "../app/usecases/postUsecase"
 import "reflect-metadata"
 import { getUserFromHeader } from "../utils/reqHeader/reqHeader"
-import Post from "../src/entity/post"
 
 @Service()
 class PostController {
@@ -36,6 +35,24 @@ class PostController {
         const user = getUserFromHeader(req)
         this.postUseCase
             .updatePost(user, req.params.postId, req.body.content)
+            .then(() => {
+                res.json({
+                    message: "success",
+                })
+            })
+            .catch((err) => {
+                next(err)
+            })
+    }
+
+    likePost = (
+        req: Request<{ postId: string }, {}, {}>,
+        res: Response,
+        next: NextFunction
+    ) => {
+        const user = getUserFromHeader(req)
+        this.postUseCase
+            .likePost(user, req.params.postId)
             .then(() => {
                 res.json({
                     message: "success",

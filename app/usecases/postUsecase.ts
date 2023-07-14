@@ -1,5 +1,4 @@
 import { Inject, Service } from "typedi"
-import { Request } from "express"
 import "reflect-metadata"
 import PostRepository from "../../frameworks/database/mongodb/repository/postRepo"
 import BaseError from "../../utils/err/baseError"
@@ -30,6 +29,16 @@ class PostUseCase {
             throw new BaseError(500, "post not found")
 
         return await this.postRepo.updatePost(postId, content)
+    }
+
+    likePost = async (user: User, postId: string): Promise<void> => {
+        const post = await this.postRepo.getPost(postId)
+        if (!post || post.userId !== user.id)
+            throw new BaseError(500, "post not found")
+
+        await this.postRepo.likePost(postId, user.id)
+
+        return await this.postRepo.incrementLikeCount(postId)
     }
 }
 
