@@ -1,15 +1,6 @@
 import mongoose from "mongoose"
 import { v4 } from "uuid"
-
-interface Post {
-    id: string
-    userId: string
-    content: string
-    likeCount: Number
-    comments: Comment[]
-    updatedAt: Date
-    createdAt: Date
-}
+import Post from "../../../../src/entity/post"
 
 interface Comment {
     user: {
@@ -20,38 +11,36 @@ interface Comment {
 
 const PostSchema = new mongoose.Schema<Post>({
     id: {
-        type: String,
         default: (): string => {
             return v4()
         },
         required: true,
     },
-    content: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-    },
     userId: {
-        type: String,
         required: true,
     },
-    comments: [
-        {
-            user: {
-                name: String,
-            },
-            content: String,
-        },
-    ],
-    likeCount: {
-        type: Number,
+    content: {
+        required: true,
     },
-
+    comments: {
+        type: Map,
+        of: Comment,
+    },
+    likeCount: {
+        default: 0,
+    },
+    commentCount: {
+        default: 0,
+    },
+    userLikes: {
+        type: Map,
+        of: Boolean,
+    },
+    updatedAt: Date,
     createdAt: Date,
 })
 
-PostSchema.index({ id: 1, email: 1 })
+PostSchema.index({ id: 1, userId: 1 })
 
 const PostModel = mongoose.model("post", PostSchema)
 

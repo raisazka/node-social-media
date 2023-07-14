@@ -1,7 +1,7 @@
-import UserModel from "../../models/user"
+import UserModel from "../models/user"
 import { Service } from "typedi"
-import Pagination from "../../../../../utils/pagination/pagination"
-import User from "../../../../../src/entity/user"
+import Pagination from "../../../../utils/pagination/pagination"
+import User from "../../../../src/entity/user"
 import "reflect-metadata"
 
 interface FindUserByPropsRequest {

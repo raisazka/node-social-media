@@ -1,6 +1,6 @@
 import { Inject, Service } from "typedi"
 import "reflect-metadata"
-import UserRepository from "../../frameworks/database/mongodb/repository/user/userRepo"
+import UserRepository from "../../frameworks/database/mongodb/repository/userRepo"
 import User from "../../src/entity/user"
 
 @Service()

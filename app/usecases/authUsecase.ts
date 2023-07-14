@@ -5,7 +5,7 @@ import {
 } from "../../frameworks/service/auth"
 import { Service, Inject } from "typedi"
 import "reflect-metadata"
-import UserRepository from "../../frameworks/database/mongodb/repository/user/userRepo"
+import UserRepository from "../../frameworks/database/mongodb/repository/userRepo"
 import BaseError from "../../utils/err/baseError"
 
 @Service()
