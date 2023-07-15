@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import { v4 } from "uuid"
-
 interface User {
     id: string
     email: string

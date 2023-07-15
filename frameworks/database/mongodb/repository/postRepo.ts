@@ -19,12 +19,13 @@ class PostRepository {
     }
     deletePost = () => {}
     listPost = async () => {}
-    incrementLikeCount = async (postId: string) => {
+    // if increment is false then decrement the like count value
+    incrementLikeCount = async (postId: string, inc: boolean) => {
         await PostModel.updateOne(
             { id: postId },
             {
                 $inc: {
-                    likeCount: 1,
+                    likeCount: inc ? 1 : -1,
                 },
             }
         )
@@ -40,6 +41,18 @@ class PostRepository {
         } catch (err) {
             throw new BaseError(500, err)
         }
+    }
+    removeLike = async (postId: string, userId: string) => {
+       try {
+            const document = await PostModel.findOne({ id: postId })
+
+            if (!document) throw new BaseError(500, "post not found")
+
+            document.userLikes.delete(userId)
+            await document.save()
+       } catch (err) {
+            throw new BaseError(500, err)
+       }
     }
 }
 

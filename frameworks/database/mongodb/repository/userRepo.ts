@@ -21,7 +21,9 @@ class UserRepository {
 
         return user
     }
-
+    getUserById = async (id: string): Promise<User> => {
+        return await UserModel.findOne<User>({ id: id })
+    }
     findUserByProperty = async (
         params: FindUserByPropsRequest,
         pagination: Pagination
@@ -35,6 +37,40 @@ class UserRepository {
 
     update = async (user: User) => {
         await UserModel.findOneAndUpdate({ id: user.id }, user)
+    }
+    removeFollowing = async (userId: string, targetUserId: string) => {
+        await UserModel.updateOne({
+            id: userId
+        }, {
+            $pull: {
+                followings: targetUserId
+            }
+        })
+
+        await UserModel.updateOne({
+            id: targetUserId
+        }, {
+            $pull: {
+                followers: userId
+            }
+        }) 
+    }
+    addFollowing = async (userId: string, targetUserId: string) => {
+        await UserModel.updateOne({
+            id: userId
+        }, {
+            $push: {
+                followings: targetUserId
+            }
+        })
+
+        await UserModel.updateOne({
+            id: targetUserId
+        }, {
+            $push: {
+                followers: userId
+            }
+        })
     }
 }
 

@@ -36,9 +36,15 @@ class PostUseCase {
         if (!post || post.userId !== user.id)
             throw new BaseError(500, "post not found")
 
+        if (post.userLikes[user.id]) {
+            await this.postRepo.removeLike(postId, user.id)
+            return await this.postRepo.incrementLikeCount(postId, false)
+        }
+
+
         await this.postRepo.likePost(postId, user.id)
 
-        return await this.postRepo.incrementLikeCount(postId)
+        return await this.postRepo.incrementLikeCount(postId, true)
     }
 }
 
