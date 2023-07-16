@@ -1,1 +1,14 @@
 runtime: nodejs18
+env: standard
+
+entrypoint: dist/app.js
+
+service: default
+
+env_variables:
+  REST_PORT: 80
+  MONGODB_HOST: mongodb+srv://raisazka:TLKgElu7PBDOfGqO@konexi-mongo.y9dffsr.mongodb.net/?retryWrites=true&w=majority
+
+handlers:
+- url: /.*
+  script: auto

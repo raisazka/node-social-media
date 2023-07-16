@@ -1,0 +1,21 @@
+# Files
+.gitignore
+.git
+.DS_Store
+.env
+.env.*
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Directories
+node_modules/
+build/
+tmp/
+logs/
+frameworks/
+src/
+utils/
+controllers/
+config/
+app/

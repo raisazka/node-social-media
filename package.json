@@ -7,6 +7,7 @@
     "dev": "nodemon",
     "start": "yarn run build && node ./dist/app.js",
     "build": "npx tsc",
+    "gcp-build": "yarn install && yarn run build && node ./dist/app.js",
     "start:nodemon": "./node_modules/nodemon/bin/nodemon.js"
   },
   "devDependencies": {

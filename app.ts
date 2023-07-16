@@ -13,7 +13,6 @@ import PostController from "./controllers/postController"
 
 const app: express.Express = express()
 const router: express.Router = express.Router()
-const port: Number = 3000
 
 // init express
 initExpress(app)
@@ -32,8 +31,10 @@ routes(app, router, authController, userController, postController)
 
 app.use(errorHandlingMiddlware)
 
-app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`)
+app.listen(config.restPort, () => {
+    return console.log(
+        `Express is listening at http://localhost:${config.restPort}`
+    )
 })
 
 export default app
