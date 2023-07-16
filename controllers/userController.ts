@@ -33,11 +33,11 @@ class UserController {
         next: NextFunction
     ) => {
         const user = getUserFromHeader(req)
-        this.userUseCase.
-            follow(user, req.params.followeeId).
-            then(() => {
+        this.userUseCase
+            .follow(user, req.params.followeeId)
+            .then(() => {
                 res.json({
-                    message: "success"
+                    message: "success",
                 })
             })
             .catch((err) => {

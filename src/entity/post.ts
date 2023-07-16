@@ -1,10 +1,13 @@
 import mongoose from "mongoose"
 
-export interface Comment {
+export interface CommentResponse {
+    id: string
     user: {
+        id: string
         name: string
     }
-    content: string
+    comment: string
+    createdAt: Date
 }
 
 export interface Post {
@@ -12,8 +15,8 @@ export interface Post {
     id: string
     userId: string
     content: string
-    likeCount: Number
-    commentCount: Number
+    likeCount: number
+    commentCount: number
     userLikes: Map<string, boolean>
     comments: Comment[]
     updatedAt: Date

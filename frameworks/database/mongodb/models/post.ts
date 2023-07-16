@@ -1,8 +1,6 @@
 import mongoose from "mongoose"
 import { v4 } from "uuid"
-import { Post, Comment } from "../../../../src/entity/post"
-
-const CommentSchema = new mongoose.Schema<Comment>()
+import { Post } from "../../../../src/entity/post"
 
 const PostSchema = new mongoose.Schema<Post>({
     id: {
@@ -20,19 +18,26 @@ const PostSchema = new mongoose.Schema<Post>({
         type: String,
         required: true,
     },
-    comments: [CommentSchema],
     likeCount: {
         type: Number,
+        default: 0,
     },
     commentCount: {
         type: Number,
+        default: 0,
     },
     userLikes: {
         type: Map,
         of: Boolean,
     },
-    updatedAt: Date,
-    createdAt: Date,
+    updatedAt: {
+        type: Date,
+        default: Date.now(),
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+    },
 })
 
 PostSchema.index({ id: 1, userId: 1 })

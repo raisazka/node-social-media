@@ -28,49 +28,65 @@ class UserRepository {
         params: FindUserByPropsRequest,
         pagination: Pagination
     ): Promise<User[]> => {
-        const users = await UserModel.find<User>({ ...params })
+        return await UserModel.find<User>({ ...params })
             .skip(pagination.size * pagination.page - pagination.size)
             .limit(pagination.size)
-
-        return users
     }
-
+    findUsersByIds = async (userIds: string[]): Promise<User[]> => {
+        return await UserModel.find<User>({
+            id: {
+                $in: userIds,
+            },
+        })
+    }
     update = async (user: User) => {
         await UserModel.findOneAndUpdate({ id: user.id }, user)
     }
     removeFollowing = async (userId: string, targetUserId: string) => {
-        await UserModel.updateOne({
-            id: userId
-        }, {
-            $pull: {
-                followings: targetUserId
+        await UserModel.updateOne(
+            {
+                id: userId,
+            },
+            {
+                $pull: {
+                    followings: targetUserId,
+                },
             }
-        })
+        )
 
-        await UserModel.updateOne({
-            id: targetUserId
-        }, {
-            $pull: {
-                followers: userId
+        await UserModel.updateOne(
+            {
+                id: targetUserId,
+            },
+            {
+                $pull: {
+                    followers: userId,
+                },
             }
-        }) 
+        )
     }
     addFollowing = async (userId: string, targetUserId: string) => {
-        await UserModel.updateOne({
-            id: userId
-        }, {
-            $push: {
-                followings: targetUserId
+        await UserModel.updateOne(
+            {
+                id: userId,
+            },
+            {
+                $push: {
+                    followings: targetUserId,
+                },
             }
-        })
+        )
 
-        await UserModel.updateOne({
-            id: targetUserId
-        }, {
-            $push: {
-                followers: userId
+        await UserModel.updateOne(
+            {
+                id: targetUserId,
+            },
+            {
+                $push: {
+                    followers: userId,
+                },
             }
-        })
+        )
     }
 }
 

@@ -4,8 +4,8 @@ interface User {
     password: string
     role: string
     name: string
-    followers: String[]
-    followings: String[]
+    followers: string[]
+    followings: string[]
 }
 
 export default User

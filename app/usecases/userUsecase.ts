@@ -2,6 +2,7 @@ import { Inject, Service } from "typedi"
 import "reflect-metadata"
 import UserRepository from "../../frameworks/database/mongodb/repository/userRepo"
 import User from "../../src/entity/user"
+import BaseError from "../../utils/err/baseError"
 
 @Service()
 class UserUseCase {
@@ -13,6 +14,10 @@ class UserUseCase {
     }
 
     follow = async (user: User, followingUserId: string): Promise<void> => {
+        if (user.id === followingUserId) {
+            throw new BaseError(500, "can't follow own user id")
+        }
+
         const usr = await this.userRepo.getUserById(user.id)
         const following = usr.followings.filter((id) => {
             return id === user.id
