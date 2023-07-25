@@ -33,6 +33,6 @@ RUN         deluser --remove-home node \
     && addgroup -S node -g 9999 \
     && adduser -S -G node -u 9999 node
 
-CMD         ["npm", "start"]
+CMD         ["yarn", "start"]
 
 USER        node

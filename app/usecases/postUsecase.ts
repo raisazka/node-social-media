@@ -5,7 +5,7 @@ import BaseError from "../../utils/err/baseError"
 import User from "../../src/entity/user"
 import UserRepository from "../../frameworks/database/mongodb/repository/userRepo"
 import Pagination from "../../utils/pagination/pagination"
-import { CommentResponse } from "../../src/entity/post"
+import { Post } from "../../src/entity/post"
 
 export interface CreatePostRequest {
     attachments?: string[]
@@ -13,7 +13,7 @@ export interface CreatePostRequest {
 }
 
 // TODO: split to dto
-interface Post {
+interface PostResponse {
     id: string
     user: {
         id: string
@@ -26,7 +26,7 @@ interface Post {
 }
 
 export interface ListPostResponse {
-    posts: Post[]
+    posts: PostResponse[]
     pagination: Pagination
 }
 
@@ -108,20 +108,8 @@ class PostUseCase {
                 }
             })
         })
-        // TODO: Split to function
-        const mappedPost: Post[] = posts.map((p) => {
-            return {
-                id: p.id,
-                user: {
-                    id: postUserMap.get(p.id).id,
-                    name: postUserMap.get(p.id).name,
-                },
-                content: p.content,
-                createdAt: p.createdAt,
-                commentCount: p.commentCount,
-                likeCount: p.likeCount,
-            }
-        })
+
+        const mappedPost: PostResponse[] = mapPost(posts, postUserMap)
 
         return {
             pagination: {
@@ -132,6 +120,25 @@ class PostUseCase {
             posts: mappedPost,
         }
     }
+}
+
+const mapPost = (
+    posts: Post[],
+    postUserMap: Map<string, User>
+): PostResponse[] => {
+    return posts.map((p) => {
+        return {
+            id: p.id,
+            user: {
+                id: postUserMap.get(p.id).id,
+                name: postUserMap.get(p.id).name,
+            },
+            content: p.content,
+            createdAt: p.createdAt,
+            commentCount: p.commentCount,
+            likeCount: p.likeCount,
+        }
+    })
 }
 
 export default PostUseCase

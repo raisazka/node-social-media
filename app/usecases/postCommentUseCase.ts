@@ -6,6 +6,7 @@ import { CommentResponse } from "../../src/entity/post"
 import UserRepository from "../../frameworks/database/mongodb/repository/userRepo"
 import PostRepository from "../../frameworks/database/mongodb/repository/postRepo"
 import Pagination from "../../utils/pagination/pagination"
+import { Comment } from "../../frameworks/database/mongodb/models/comment"
 
 interface ListCommentResponse {
     comments: CommentResponse[]
@@ -58,17 +59,10 @@ class PostCommentUseCase {
             })
         })
 
-        const mappedComment: CommentResponse[] = comments.map((c) => {
-            return {
-                comment: c.comment,
-                id: c.id,
-                user: {
-                    id: commentUserMap.get(c.id).id,
-                    name: commentUserMap.get(c.id).name,
-                },
-                createdAt: c.createdAt,
-            }
-        })
+        const mappedComment: CommentResponse[] = mapComment(
+            comments,
+            commentUserMap
+        )
 
         const post = await this.postRepo.getPost(postId)
 
@@ -95,6 +89,23 @@ class PostCommentUseCase {
 
         await this.postRepo.updateComment(commentId, commentContent)
     }
+}
+
+const mapComment = (
+    comments: Comment[],
+    commentUserMap: Map<string, User>
+): CommentResponse[] => {
+    return comments.map((c) => {
+        return {
+            comment: c.comment,
+            id: c.id,
+            user: {
+                id: commentUserMap.get(c.id).id,
+                name: commentUserMap.get(c.id).name,
+            },
+            createdAt: c.createdAt,
+        }
+    })
 }
 
 export default PostCommentUseCase
